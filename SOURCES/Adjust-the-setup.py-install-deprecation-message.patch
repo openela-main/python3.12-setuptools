@@ -1,0 +1,41 @@
+From 58f33f0aef5b137287e6f425b922a03123735a77 Mon Sep 17 00:00:00 2001
+From: Lumir Balhar <lbalhar@redhat.com>
+Date: Wed, 20 Sep 2023 17:18:47 +0200
+Subject: [PATCH] Adjust the setup.py install deprecation message and URL
+
+But only when building RPM packages.
+---
+ setuptools/command/install.py | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
+
+diff --git a/setuptools/command/install.py b/setuptools/command/install.py
+index 606cce9..0af1631 100644
+--- a/setuptools/command/install.py
++++ b/setuptools/command/install.py
+@@ -1,6 +1,7 @@
+ from distutils.errors import DistutilsArgError
+ import inspect
+ import glob
++import os
+ import platform
+ import distutils.command.install as orig
+ 
+@@ -40,8 +41,13 @@ class install(orig.install):
+             Please avoid running ``setup.py`` directly.
+             Instead, use pypa/build, pypa/installer or other
+             standards-based tools.
+-            """,
+-            see_url="https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html",
++            """
++            + ("""
++            Follow the current Python packaging guidelines when building
++            Python RPM packages.
++            """ if "RPM_BUILD_ROOT" in os.environ else ""),
++            see_url=("https://blog.ganssle.io/articles/2021/10/setup-py-deprecated.html" +
++            ("\nand https://docs.fedoraproject.org/en-US/packaging-guidelines/Python/" if "RPM_BUILD_ROOT" in os.environ else "")),
+             # TODO: Document how to bootstrap setuptools without install
+             #       (e.g. by unziping the wheel file)
+             #       and then add a due_date to this warning.
+-- 
+2.41.0
+
