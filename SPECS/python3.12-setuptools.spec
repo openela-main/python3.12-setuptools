@@ -24,7 +24,7 @@
 Name:           python%{python3_pkgversion}-setuptools
 # When updating, update the bundled libraries versions bellow!
 Version:        68.2.2
-Release:        3%{?dist}
+Release:        4%{?dist}
 Summary:        Easily build and distribute Python packages
 # setuptools is MIT
 # platformdirs is MIT
@@ -42,6 +42,13 @@ Summary:        Easily build and distribute Python packages
 License:        MIT and ASL 2.0 and (BSD or ASL 2.0) and Python
 URL:            https://pypi.python.org/pypi/%{srcname}
 Source0:        %{pypi_source %{srcname} %{version}}
+
+# Security fix for CVE-2024-6345
+# Remote code execution via download functions in the package_index module
+# Tracking bug: https://bugzilla.redhat.com/show_bug.cgi?id=2297771
+# Upstream solution: https://github.com/pypa/setuptools/pull/4332
+# Patch simplified because upstream doesn't support SVN anymore.
+Patch:          CVE-2024-6345.patch
 
 BuildArch:      noarch
 
@@ -220,6 +227,10 @@ PYTHONPATH=$(pwd) %pytest \
 
 
 %changelog
+* Wed Jul 24 2024 Lumír Balhar <lbalhar@redhat.com> - 68.2.2-4
+- Security fix for CVE-2024-6345
+Resolves: RHEL-50475
+
 * Tue Jan 23 2024 Miro Hrončok <mhroncok@redhat.com> - 68.2.2-3
 - Rebuilt for timestamp .pyc invalidation mode
 
