@@ -19,7 +19,7 @@
 Name:           python%{python3_pkgversion}-setuptools
 # When updating, update the bundled libraries versions bellow!
 Version:        68.2.2
-Release:        3%{?dist}
+Release:        3%{?dist}.1
 Summary:        Easily build and distribute Python packages
 # setuptools is MIT
 # platformdirs is MIT
@@ -41,6 +41,13 @@ Source0:        %{pypi_source %{srcname} %{version}}
 # The `setup.py install` deprecation notice might be confusing for RPM packagers
 # adjust it, but only when $RPM_BUILD_ROOT is set
 Patch:          Adjust-the-setup.py-install-deprecation-message.patch
+
+# Security fix for CVE-2024-6345
+# Remote code execution via download functions in the package_index module
+# Tracking bug: https://bugzilla.redhat.com/show_bug.cgi?id=2297771
+# Upstream solution: https://github.com/pypa/setuptools/pull/4332
+# Patch simplified because upstream doesn't support SVN anymore.
+Patch:          CVE-2024-6345.patch
 
 BuildArch:      noarch
 
@@ -219,6 +226,10 @@ PYTHONPATH=$(pwd) %pytest \
 
 
 %changelog
+* Wed Jul 24 2024 Lumír Balhar <lbalhar@redhat.com> - 68.2.2-3.1
+- Security fix for CVE-2024-6345
+Resolves: RHEL-50481
+
 * Tue Jan 23 2024 Miro Hrončok <mhroncok@redhat.com> - 68.2.2-3
 - Rebuilt for timestamp .pyc invalidation mode
 
