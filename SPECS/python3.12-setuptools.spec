@@ -19,7 +19,7 @@
 Name:           python%{python3_pkgversion}-setuptools
 # When updating, update the bundled libraries versions bellow!
 Version:        68.2.2
-Release:        3%{?dist}.1
+Release:        4%{?dist}
 Summary:        Easily build and distribute Python packages
 # setuptools is MIT
 # platformdirs is MIT
@@ -226,9 +226,9 @@ PYTHONPATH=$(pwd) %pytest \
 
 
 %changelog
-* Wed Jul 24 2024 Lumír Balhar <lbalhar@redhat.com> - 68.2.2-3.1
+* Wed Jul 24 2024 Lumír Balhar <lbalhar@redhat.com> - 68.2.2-4
 - Security fix for CVE-2024-6345
-Resolves: RHEL-50481
+Resolves: RHEL-49985
 
 * Tue Jan 23 2024 Miro Hrončok <mhroncok@redhat.com> - 68.2.2-3
 - Rebuilt for timestamp .pyc invalidation mode
