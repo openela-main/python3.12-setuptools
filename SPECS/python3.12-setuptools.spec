@@ -19,7 +19,7 @@
 Name:           python%{python3_pkgversion}-setuptools
 # When updating, update the bundled libraries versions bellow!
 Version:        68.2.2
-Release:        4%{?dist}
+Release:        5%{?dist}
 Summary:        Easily build and distribute Python packages
 # setuptools is MIT
 # platformdirs is MIT
@@ -48,6 +48,12 @@ Patch:          Adjust-the-setup.py-install-deprecation-message.patch
 # Upstream solution: https://github.com/pypa/setuptools/pull/4332
 # Patch simplified because upstream doesn't support SVN anymore.
 Patch:          CVE-2024-6345.patch
+
+# Security fix for CVE-2025-47273
+# Path traversal in PackageIndex.download leads to Arbitrary File Write
+# Upstream solution: https://github.com/pypa/setuptools/pull/4951/
+Patch:          CVE-2025-47273.patch
+
 
 BuildArch:      noarch
 
@@ -226,6 +232,10 @@ PYTHONPATH=$(pwd) %pytest \
 
 
 %changelog
+* Wed Jul 02 2025 Tomáš Hrnčiar <thrnciar@redhat.com> - 68.2.2-5
+- Security fix for CVE-2025-47273
+Resolves: RHEL-101118
+
 * Wed Jul 24 2024 Lumír Balhar <lbalhar@redhat.com> - 68.2.2-4
 - Security fix for CVE-2024-6345
 Resolves: RHEL-49985
